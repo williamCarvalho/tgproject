@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+
+                {% block content %}
+                    <h1>Consultar</h1>
+                    <form method="POST" class="post-form" action="{% url 'resultado' %}">{% csrf_token %}
+                        {{ form.as_p }}
+<!--                         <div class="form-group">
+                            <label for="id">Email address</label>
+                            <select name="id" id="id" class="form-control" required >
+                               <option value="32766">32766-SP-Cachoeira Paulista Antiga</option>
+                               <option value="32659">32659-SP-Cachoeira Paulista HIDRO</option>
+                               <option value="31000">31000-SP-Cachoeira Paulista Met</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dataInicial">Data Inicial</label>
+                            <input type="date" class="form-control" id="dataInicial" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="dataFinal">Data Inicial</label>
+                            <input type="date" class="form-control" id="dataFinal" required />
+                        </div> -->
+                        <button type="submit" class="btn btn-default">Enviar</button>
+                        <!-- <button type="submit" class="save btn btn-default">Enviar</button> -->
+                    </form>
+                {% endblock %}
