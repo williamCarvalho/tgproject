@@ -125,9 +125,9 @@ def dados(estado, datIni, datFim):
     header = [te.text for te in tr_header[0:]]
 
     tr_titulo = [to.text for to in tr_nodes_titulo[0:]]
-    th_content = [i[0].text for i in tr_nodes[0].xpath("th")]
+    # th_content = [i[0].text for i in tr_nodes[0].xpath("th")]
     td_content = [[td.text for td in tr.xpath('td')] for tr in tr_nodes[1:]]
-    header = header[0].split(',')
+    # header = header[0].split(',')
 
     return tr_titulo, td_content,
     
