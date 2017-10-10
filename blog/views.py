@@ -8,6 +8,7 @@ from .models import Consulta
 from .forms import PostForm
 import pandas as pd
 import numpy as np
+import string
 
 # from django.http import HttpResponse
 # from django.http import HttpResponseRedirect
@@ -87,8 +88,48 @@ def obtem_dados():
     td_content
     
     s = pd.Series(td_content)
-    s
+    return s
 
+def dados(estado, datIni, datFim):
+    from lxml import etree
+    import requests
+    import json
+    import urllib
+
+    import pandas as pd
+    import numpy as np
+    import matplotlib.pyplot as plt
+    
+    # variaveis controle
+    form_id = '902634'
+    uf = estado
+    dataIni = string.split(str(datIni), "-")
+    dia_inicial = dataIni[2]
+    mes_inicial = dataIni[1]
+    ano_inicial = dataIni[0]
+    dataFim = string.split(str(datFim), "-")
+    dia_final = dataFim[2]
+    mes_final = dataFim[1]
+    ano_final = dataFim[0]
+    
+    fields = {'id':uf,'form_id':form_id,'dia_inicial':dia_inicial,'mes_inicial':mes_inicial,'ano_inicial':ano_inicial,'dia_final':dia_final,'mes_final':mes_final,'ano_final':ano_final}
+    
+    r = requests.post('http://sinda.crn2.inpe.br/PCD/SITE/novo/site/historico/action.php', fields)
+    
+    html = etree.HTML(r.text)
+    tr_nodes = html.xpath('//table/tr')
+    tr_nodes_titulo = html.xpath('//table/tr/td/b')
+    tr_header = html.xpath('//table/caption/center/font')
+
+    header = [te.text for te in tr_header[0:]]
+
+    tr_titulo = [to.text for to in tr_nodes_titulo[0:]]
+    th_content = [i[0].text for i in tr_nodes[0].xpath("th")]
+    td_content = [[td.text for td in tr.xpath('td')] for tr in tr_nodes[1:]]
+    header = header[0].split(',')
+
+    return tr_titulo, td_content,
+    
 def consulta(request):
     form = PostForm()
     return render(request, 'blog/consulta.html', {'form': form})
@@ -97,12 +138,16 @@ def resultado(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            g = grafico()
-            # res = simple(g)
-            res = obtem_dados()
+            # post = form.save(commit=False)
+            estado = form.cleaned_data['estado']
+            dataIni = form.cleaned_data['data_inicio']
+            dataFim = form.cleaned_data['data_fim']
+            # dados(estado,dataIni,dataFim)
+            # g = grafico()
+            res = dados(estado,dataIni,dataFim)
+            # res = obtem_dados()
             # res[1] = grafico
-            return render(request, 'blog/resultado.html', {'res': res})
+            return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1]})
     else:
         return render(request, 'blog/resultado.html')
 

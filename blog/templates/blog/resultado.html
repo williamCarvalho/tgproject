@@ -2,6 +2,26 @@
 
                 {% block content %}
                     <h1>Resultado</h1>
-                    {{ res }}
+<!--                     {{ res }} -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            {% for h in header %}
+                                <th>{{ h }}</th>
+                            {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for dado in dados %}
+                            <tr>
+                            {% for d in dado %}
+                                <td>{{ d }}</td>
+                            {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                     <!-- <img src="{% url 'chart' %}" /> -->
                 {% endblock %}
