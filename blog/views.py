@@ -10,6 +10,7 @@ from .forms import PostForm
 import pandas as pd
 import numpy as np
 import string
+from django.template import RequestContext
 
 # from django.http import HttpResponse
 # from django.http import HttpResponseRedirect
@@ -148,7 +149,7 @@ def resultado(request):
             res = dados(estado,dataIni,dataFim)
             # res = obtem_dados()
             # res[1] = grafico
-            return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1], 'w': "TESTE"})
+            return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1], 'w': "TESTE"},  RequestContext(request))
     else:
         return render(request, 'blog/resultado.html')
 
