@@ -45,7 +45,7 @@ def simple(request):
     return response
 
 def grafico():
-    fixed_df = pd.read_csv('comptagevelo20162.csv', sep=',', encoding='latin1', parse_dates=['Date'], dayfirst=True, index_col='Date') 
+    fixed_df = pd.read_csv('comptagevelo20162.csv', sep=',', encoding='latin1', parse_dates=['Date'], dayfirst=True, index_col='Date')
     return fixed_df['Berri1'].plot()
 
 def obtem_dados():
@@ -88,7 +88,7 @@ def obtem_dados():
 
     print ("\nDADOS:")
     td_content
-    
+
     s = pd.Series(td_content)
     return s
 
@@ -101,7 +101,7 @@ def dados(estado, datIni, datFim):
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
-    
+
     # variaveis controle
     form_id = '902634'
     uf = estado
@@ -113,11 +113,13 @@ def dados(estado, datIni, datFim):
     dia_final = dataFim[2]
     mes_final = dataFim[1]
     ano_final = dataFim[0]
-    
+
     fields = {'id':uf,'form_id':form_id,'dia_inicial':dia_inicial,'mes_inicial':mes_inicial,'ano_inicial':ano_inicial,'dia_final':dia_final,'mes_final':mes_final,'ano_final':ano_final}
-    
+
     r = requests.post('http://sinda.crn2.inpe.br/PCD/SITE/novo/site/historico/action.php', fields)
-    
+
+    print(r)
+
     html = etree.HTML(r.text)
     tr_nodes = html.xpath('//table/tr')
     tr_nodes_titulo = html.xpath('//table/tr/td/b')
@@ -131,7 +133,7 @@ def dados(estado, datIni, datFim):
     # header = header[0].split(',')
 
     return tr_titulo, td_content,
-    
+
 def consulta(request):
     form = PostForm()
     return render(request, 'blog/consulta.html', {'form': form})
@@ -147,6 +149,7 @@ def resultado(request):
             # dados(estado,dataIni,dataFim)
             # g = grafico()
             res = dados(estado,dataIni,dataFim)
+            # print(res)
             # res = obtem_dados()
             # res[1] = grafico
             return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1], 'w': "TESTE"},  RequestContext(request))
