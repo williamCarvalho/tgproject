@@ -148,7 +148,7 @@ def resultado(request):
             res = dados(estado,dataIni,dataFim)
             # res = obtem_dados()
             # res[1] = grafico
-            return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1]})
+            return render(request, 'blog/resultado.html', {'header': res[0], 'dados': res[1], 'w': "TESTE"})
     else:
         return render(request, 'blog/resultado.html')
 
